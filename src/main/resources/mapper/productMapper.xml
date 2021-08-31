@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kwaksamo.kwaksinsa.repository.ProductRepository">
+	<select id="findAll" resultType="com.kwaksamo.kwaksinsa.model.Product">
+		SELECT * 
+		FROM product
+	</select>
+	
+	<select id="findAllJoin" resultType="com.kwaksamo.kwaksinsa.controller.respdto.ProductRespDto">
+		SELECT p.id, p.name, p.imgUrl, p.disc, p.price, p.createDate, s.id "stockId", s.productId, s.count
+		FROM product p INNER JOIN stock s
+		ON p.id = s.productId
+	</select>
+	
+	<select id="findById" resultType="com.kwaksamo.kwaksinsa.model.Product">
+		SELECT *
+		FROM product
+		WHERE id = #{id}
+	</select>
+
+	<insert id="productSave" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO product(name, imgUrl, disc, price,createDate)
+		VALUES(#{name},#{imgUrl},#{disc},#{price},now())
+	</insert>
+	
+	<update id="update">
+		UPDATE product SET name = #{name} , imgUrl = #{imgUrl}, disc = #{disc}, price = #{price}
+		WHERE id = #{id} 
+	</update>
+	
+	<delete id="deleteById">
+		DELETE FROM product
+		WHERE id = #{id}
+	</delete>
+</mapper>
